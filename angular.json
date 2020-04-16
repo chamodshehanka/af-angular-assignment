@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "af-angular-assignment"
+    }
+  },
+  "defaultProject": "af-angular-assignment",
+  "cli": {
+    "analytics": "ed9b5d08-feb9-4752-b950-fc19ddd0fe1e"
+  }
 }
