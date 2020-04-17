@@ -25,6 +25,9 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarView,
 } from 'angular-calendar';
+
+import * as UIkit from 'uikit';
+
 const colors: any = {
   red: {
     primary: '#ad2121',
@@ -45,13 +48,13 @@ const colors: any = {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
 })
+
 export class CalendarComponent implements OnInit {
   ngOnInit(): void {}
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
   view: CalendarView = CalendarView.Month;
-
   CalendarView = CalendarView;
 
   viewDate: Date = new Date();
@@ -60,16 +63,22 @@ export class CalendarComponent implements OnInit {
     event: CalendarEvent;
   };
 
+  // UIKit modal
+  // uiKitModal: Modal = UIKit.Modal()
+  // UIKit.
+  
+
   actions: CalendarEventAction[] = [
+    // <i class="fa fa-fw fa-pencil"></i>
     {
-      label: '<i class="fa fa-fw fa-pencil"></i>',
+      label: '<button class="uk-button uk-button-danger">Edit</button>',
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.handleEvent('Edited', event);
       },
     },
     {
-      label: '<i class="fa fa-fw fa-times"></i>',
+      label: '<i class="fa fa-fw fa-times">Delete</i>',
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.events = this.events.filter((iEvent) => iEvent !== event);
