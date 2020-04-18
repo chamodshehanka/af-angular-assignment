@@ -9,6 +9,7 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 import { BannerComponent } from './components/banner/banner.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,15 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     CalendarComponent,
     BannerComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
+    BrowserAnimationsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

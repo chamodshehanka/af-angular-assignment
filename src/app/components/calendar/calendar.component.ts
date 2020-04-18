@@ -16,7 +16,7 @@ import {
   addHours,
 } from 'date-fns';
 
-import { Subject } from 'rxjs';
+import { Subject, from } from 'rxjs';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -26,7 +26,7 @@ import {
   CalendarView,
 } from 'angular-calendar';
 
-import * as UIkit from 'uikit';
+// import * as UIkit from 'uikit';
 
 const colors: any = {
   red: {
@@ -48,9 +48,10 @@ const colors: any = {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
 })
-
 export class CalendarComponent implements OnInit {
   ngOnInit(): void {}
+
+  constructor(private modal: NgbModal) {}
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
@@ -62,11 +63,6 @@ export class CalendarComponent implements OnInit {
     action: string;
     event: CalendarEvent;
   };
-
-  // UIKit modal
-  // uiKitModal: Modal = UIKit.Modal()
-  // UIKit.
-  
 
   actions: CalendarEventAction[] = [
     // <i class="fa fa-fw fa-pencil"></i>
@@ -132,8 +128,6 @@ export class CalendarComponent implements OnInit {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal) {}
-
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
@@ -179,6 +173,7 @@ export class CalendarComponent implements OnInit {
         start: startOfDay(new Date()),
         end: endOfDay(new Date()),
         color: colors.red,
+        actions: this.actions,
         draggable: true,
         resizable: {
           beforeStart: true,
