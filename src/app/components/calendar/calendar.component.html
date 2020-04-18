@@ -95,13 +95,19 @@
 
 <br /><br /><br />
 
-<h3>
-  Edit events
+<div style="float: left;">
+  <h3>
+    Edit events
+
+    <div class="clearfix"></div>
+  </h3>
+</div>
+
+<div class="add-new">
   <button class="uk-button uk-button-primary pull-right" (click)="addEvent()">
     Add new
   </button>
-  <div class="clearfix"></div>
-</h3>
+</div>
 
 <div class="table-responsive">
   <table class="uk-table uk-table-hover">
@@ -116,14 +122,15 @@
       </tr>
     </thead>
 
-    <!-- <tbody>
+    <tbody>
       <tr *ngFor="let event of events">
         <td>
           <input
             type="text"
-            class="form-control"
+            class="uk-input"
             [(ngModel)]="event.title"
             (keyup)="refresh.next()"
+            value="{{ event.title }}"
           />
         </td>
         <td>
@@ -141,42 +148,52 @@
           />
         </td>
         <td>
-          <input
-            class="form-control"
-            type="text"
-            mwlFlatpickr
-            [(ngModel)]="event.start"
-            (ngModelChange)="refresh.next()"
-            [altInput]="true"
-            [convertModelValue]="true"
-            [enableTime]="true"
-            dateFormat="Y-m-dTH:i"
-            altFormat="F j, Y H:i"
-            placeholder="Not set"
-          />
+          <div class="input-group date">
+            <input
+              class="uk-input date"
+              type="text"
+              mwlFlatpickr
+              [(ngModel)]="event.start"
+              (ngModelChange)="refresh.next()"
+              [altInput]="true"
+              [convertModelValue]="true"
+              [enableTime]="true"
+              dateFormat="Y-m-dTH:i"
+              altFormat="F j, Y H:i"
+              placeholder="Not set"
+              data-uk-datepicker
+            />
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
         </td>
         <td>
           <input
-            class="form-control"
+            class="uk-input"
             type="text"
             mwlFlatpickr
-            (ngModelChange)="refresh.next()"
-            [enableTime]="true"
-            [convertModelValue]="true"
-            [altInput]="true"
             [(ngModel)]="event.end"
+            (ngModelChange)="refresh.next()"
+            [altInput]="true"
+            [convertModelValue]="true"
+            [enableTime]="true"
             dateFormat="Y-m-dTH:i"
             altFormat="F j, Y H:i"
             placeholder="Not set"
+            data-uk-datepicker
           />
         </td>
         <td>
-          <button class="uk-button uk-button-danger" (click)="deleteEvent(event)">
+          <button
+            class="uk-button uk-button-danger"
+            (click)="deleteEvent(event)"
+          >
             Delete
           </button>
         </td>
       </tr>
-    </tbody> -->
+    </tbody>
   </table>
 </div>
 
@@ -204,7 +221,7 @@
   </div>
 </ng-template> -->
 
-<div id="modalContent" uk-modal>
+<!-- <div id="modalContent" uk-modal>
   <div class="uk-modal-dialog uk-modal-body">
     <h2 class="uk-modal-title">Event action occurred</h2>
 
@@ -220,4 +237,4 @@
     </div>
     <button class="uk-modal-close-default" type="button" uk-close></button>
   </div>
-</div>
+</div> -->
