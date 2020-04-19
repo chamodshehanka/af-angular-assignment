@@ -25,8 +25,7 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarView,
 } from 'angular-calendar';
-
-// import * as UIkit from 'uikit';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 const colors: any = {
   red: {
@@ -49,9 +48,46 @@ const colors: any = {
   styleUrls: ['./calendar.component.css'],
 })
 export class CalendarComponent implements OnInit {
+  eventForm: FormGroup;
+
+  // Form Controls
+  eventTitle = new FormControl();
+  eventStartDate = new FormControl();
+  eventEndDate = new FormControl();
+
+  constructor(private modal: NgbModal, private formBuilder: FormBuilder) {
+    this.eventForm = this.formBuilder.group({
+      eventTitle: '',
+      startDate: '',
+      endDate: '',
+    });
+
+    this.eventForm.valueChanges.subscribe();
+  }
+
   ngOnInit(): void {}
 
-  constructor(private modal: NgbModal) {}
+  addNewEvent(): void {
+    const title = this.eventTitle.value;
+    const startDate = this.eventStartDate.value;
+    const endDate = this.eventEndDate.value;
+
+    this.events = [
+      ...this.events,
+      {
+        title: title,
+        start: startDate,
+        end: endDate,
+        color: colors.red,
+        actions: this.actions,
+        draggable: true,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true,
+        },
+      },
+    ];
+  }
 
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
 
@@ -66,14 +102,14 @@ export class CalendarComponent implements OnInit {
 
   actions: CalendarEventAction[] = [
     // <i class="fa fa-fw fa-pencil"></i>
-    {
-      label:
-        '<button class="uk-button uk-button-danger"><img src="https://img.icons8.com/pastel-glyph/24/000000/edit.png"/></button>',
-      a11yLabel: 'Edit',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      },
-    },
+    // {
+    //   label:
+    //     '<button class="uk-button uk-button-danger"><img src="https://img.icons8.com/pastel-glyph/24/000000/edit.png"/></button>',
+    //   a11yLabel: 'Edit',
+    //   onClick: ({ event }: { event: CalendarEvent }): void => {
+    //     this.handleEvent('Edited', event);
+    //   },
+    // },
     {
       label:
         '<i class="fa fa-fw fa-times"><img src="https://img.icons8.com/android/24/000000/trash.png"/></i>',
@@ -91,7 +127,7 @@ export class CalendarComponent implements OnInit {
     {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
-      title: 'A 3 day event',
+      title: 'Feed the cat',
       color: colors.red,
       actions: this.actions,
       allDay: true,
@@ -177,6 +213,9 @@ export class CalendarComponent implements OnInit {
         },
       },
     ];
+
+    // events array sort
+    // this.events.sort((a,b) => a,b);
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {
@@ -189,5 +228,45 @@ export class CalendarComponent implements OnInit {
 
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = false;
+  }
+
+  calculateDateDifference(startDate: Date, endDate: Date) {
+    let currentDate = new Date();
+    startDate = new Date(startDate);
+
+    var differet = Math.floor(
+      (Date.UTC(
+        startDate.getFullYear(),
+        startDate.getMonth(),
+        startDate.getDate(),
+        startDate.getTime()
+      ) -
+        Date.UTC(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          currentDate.getDate(),
+          currentDate.getTime()
+        )) /
+        (1000 * 60 * 60 * 24)
+    );
+
+    var endDifference = Math.floor(
+      (endDate.getFullYear(),
+      endDate.getMonth(),
+      endDate.getDate(),
+      endDate.getTime()) -
+        (currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate(),
+        currentDate.getTime())
+    );
+
+    if (differet > 0) {
+      return 'Pending';
+    } else if (endDifference) {
+      return 'On going';
+    }
+
+    return 'Expired';
   }
 }

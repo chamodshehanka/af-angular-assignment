@@ -91,31 +91,131 @@
   </mwl-calendar-day-view>
 </div>
 
-<!-- Everything you see below is just for the demo, you don't need to include it in your app -->
+<!--  -->
 
 <br /><br /><br />
 
-<div style="float: left;">
-  <h3>
-    Edit events
-
-    <div class="clearfix"></div>
-  </h3>
+<div class="uk-card-secondary">
+  <br />
+  <p class="uk-text" *ngFor="let event of events; first as isFirst">
+    <span *ngIf="isFirst" class="uk-text"
+      >Your Next Event >>
+      <span class="uk-text-primary">{{ event.title }} </span> starts at
+      {{ event.start }}
+    </span>
+  </p>
+  <br />
 </div>
 
-<div class="add-new">
-  <button class="uk-button uk-button-primary pull-right" (click)="addEvent()">
-    Add new
-  </button>
+<br /><br /><br />
+
+<div uk-grid>
+  <div style="float: left;">
+    <h3 class="uk-text-bold">
+      Edit events
+
+      <div class="clearfix"></div>
+    </h3>
+  </div>
+
+  <div class="add-new">
+    <button
+      class="uk-button uk-button-primary pull-right"
+      uk-toggle="target: #modal-add-event"
+    >
+      Add new
+    </button>
+  </div>
 </div>
 
+<!-- Add Event Modal -->
+<div id="modal-add-event" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body">
+    <button class="uk-modal-close-default" type="button" uk-close></button>
+    <h2 class="uk-modal-title">Add New Event</h2>
+
+    <form [formGroup]="eventForm">
+      <fieldset class="uk-fieldset">
+        <div class="uk-margin">
+          <input
+            name="eventTitle"
+            id="txtEventTitle"
+            class="uk-input"
+            type="text"
+            placeholder="Event Title"
+            formControllerName="eventTitle"
+            [formControl]="eventTitle"
+          />
+
+          <div
+            class="uk-alert-danger"
+            uk-alert
+            *ngIf="eventTitle.touched && !eventTitle.valid"
+          >
+            <a class="uk-alert-close" uk-close></a>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt.
+            </p>
+          </div>
+        </div>
+
+        <div class="uk-margin">
+          <label for="txtStartDate" class="uk-text">Start Date</label>
+          <input
+            id="txtStartDate"
+            class="uk-input date"
+            type="text"
+            mwlFlatpickr
+            (ngModelChange)="refresh.next()"
+            [altInput]="true"
+            [convertModelValue]="true"
+            [enableTime]="true"
+            dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i"
+            placeholder="Start Date"
+            data-uk-datepicker
+            [formControl]="eventStartDate"
+          />
+        </div>
+
+        <div class="uk-margin">
+          <label for="txtEndDate" class="uk-text">End Date</label>
+          <input
+            id="txtEndDate"
+            class="uk-input date"
+            type="text"
+            mwlFlatpickr
+            (ngModelChange)="refresh.next()"
+            [altInput]="true"
+            [convertModelValue]="true"
+            [enableTime]="true"
+            dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i"
+            placeholder="End Date"
+            data-uk-datepicker
+            [formControl]="eventEndDate"
+          />
+        </div>
+
+        <div class="uk-margin add-new">
+          <button class="uk-button uk-button-primary" (click)="addNewEvent()">
+            Add
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<!-- Table -->
 <div class="table-responsive">
   <table class="uk-table uk-table-hover">
     <thead>
       <tr>
         <th>Title</th>
         <th>Primary color</th>
-        <th>Secondary color</th>
+        <th>Status</th>
         <th>Starts at</th>
         <th>Ends at</th>
         <th>Remove</th>
@@ -141,11 +241,7 @@
           />
         </td>
         <td>
-          <input
-            type="color"
-            [(ngModel)]="event.color.secondary"
-            (change)="refresh.next()"
-          />
+          {{ calculateDateDifference(event.start, event.end) }}
         </td>
         <td>
           <div class="input-group date">
@@ -196,45 +292,3 @@
     </tbody>
   </table>
 </div>
-
-<ng-template #modalContent let-close="close">
-  <div class="modal-header">
-    <h5 class="uk-modal-title">Event action occurred</h5>
-    <button type="button" class="close uk-modal-close-default" (click)="close()" uk-close>
-      <!-- <span aria-hidden="true">&times;</span> -->
-    </button>
-  </div>
-  <div class="modal-body ">
-    <div>
-      Action:
-      <pre>{{ modalData?.action }}</pre>
-    </div>
-    <div>
-      Event:
-      <pre>{{ modalData?.event | json }}</pre>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="uk-button btn-outline-secondary" (click)="close()">
-      OK
-    </button>
-  </div>
-</ng-template>
-
-<!-- <div id="modalContent" uk-modal>
-  <div class="uk-modal-dialog uk-modal-body">
-    <h2 class="uk-modal-title">Event action occurred</h2>
-
-    <div class="uk-modal-dialog uk-modal-body">
-      <div>
-        Action:
-        <pre>{{ modalData?.action }}</pre>
-      </div>
-      <div>
-        Event:
-        <pre>{{ modalData?.event | json }}</pre>
-      </div>
-    </div>
-    <button class="uk-modal-close-default" type="button" uk-close></button>
-  </div>
-</div> -->

@@ -10,7 +10,7 @@ import { BannerComponent } from './components/banner/banner.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule ,ReactiveFormsModule } from '@angular/forms';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import {
   NgbModalModule,
@@ -37,6 +37,7 @@ import {
     FlatpickrModule.forRoot(),
     NgbModalModule,
     NgbDatepickerModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
