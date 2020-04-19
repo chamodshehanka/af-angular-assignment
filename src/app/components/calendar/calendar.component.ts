@@ -264,7 +264,7 @@ export class CalendarComponent implements OnInit {
     if (differet > 0) {
       return 'Pending';
     } else if (endDifference) {
-      return 'On going';
+      return 'Event On going';
     }
 
     return 'Expired';

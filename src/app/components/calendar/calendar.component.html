@@ -214,7 +214,6 @@
     <thead>
       <tr>
         <th>Title</th>
-        <th>Primary color</th>
         <th>Status</th>
         <th>Starts at</th>
         <th>Ends at</th>
@@ -233,13 +232,7 @@
             value="{{ event.title }}"
           />
         </td>
-        <td>
-          <input
-            type="color"
-            [(ngModel)]="event.color.primary"
-            (change)="refresh.next()"
-          />
-        </td>
+
         <td>
           {{ calculateDateDifference(event.start, event.end) }}
         </td>
