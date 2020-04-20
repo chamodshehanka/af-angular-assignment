@@ -101,15 +101,6 @@ export class CalendarComponent implements OnInit {
   };
 
   actions: CalendarEventAction[] = [
-    // <i class="fa fa-fw fa-pencil"></i>
-    // {
-    //   label:
-    //     '<button class="uk-button uk-button-danger"><img src="https://img.icons8.com/pastel-glyph/24/000000/edit.png"/></button>',
-    //   a11yLabel: 'Edit',
-    //   onClick: ({ event }: { event: CalendarEvent }): void => {
-    //     this.handleEvent('Edited', event);
-    //   },
-    // },
     {
       label:
         '<i class="fa fa-fw fa-times"><img src="https://img.icons8.com/android/24/000000/trash.png"/></i>',
@@ -125,6 +116,19 @@ export class CalendarComponent implements OnInit {
 
   events: CalendarEvent[] = [
     {
+      start: subDays(startOfDay(new Date()), 2),
+      end: new Date(2020, 4, 19),
+      title: 'Wash the pet',
+      color: colors.red,
+      actions: this.actions,
+      allDay: true,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true,
+      },
+      draggable: true,
+    },
+    {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
       title: 'Feed the cat',
@@ -137,25 +141,6 @@ export class CalendarComponent implements OnInit {
       },
       draggable: true,
     },
-    // {
-    //   start: subDays(endOfMonth(new Date()), 3),
-    //   end: addDays(endOfMonth(new Date()), 3),
-    //   title: 'A long event that spans 2 months',
-    //   color: colors.blue,
-    //   allDay: true,
-    // },
-    // {
-    //   start: addHours(startOfDay(new Date()), 2),
-    //   end: addHours(new Date(), 2),
-    //   title: 'A draggable and resizable event',
-    //   color: colors.yellow,
-    //   actions: this.actions,
-    //   resizable: {
-    //     beforeStart: true,
-    //     afterEnd: true,
-    //   },
-    //   draggable: true,
-    // },
   ];
 
   activeDayIsOpen: boolean = true;
@@ -213,9 +198,6 @@ export class CalendarComponent implements OnInit {
         },
       },
     ];
-
-    // events array sort
-    // this.events.sort((a,b) => a,b);
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {
@@ -233,40 +215,50 @@ export class CalendarComponent implements OnInit {
   calculateDateDifference(startDate: Date, endDate: Date) {
     let currentDate = new Date();
     startDate = new Date(startDate);
+    endDate = new Date(endDate);
 
     var differet = Math.floor(
       (Date.UTC(
         startDate.getFullYear(),
         startDate.getMonth(),
-        startDate.getDate(),
-        startDate.getTime()
+        startDate.getDay(),
+        startDate.getHours(),
+        startDate.getMinutes()
       ) -
         Date.UTC(
           currentDate.getFullYear(),
           currentDate.getMonth(),
-          currentDate.getDate(),
-          currentDate.getTime()
+          currentDate.getDay(),
+          currentDate.getHours(),
+          currentDate.getMinutes()
         )) /
         (1000 * 60 * 60 * 24)
     );
 
     var endDifference = Math.floor(
-      (endDate.getFullYear(),
-      endDate.getMonth(),
-      endDate.getDate(),
-      endDate.getTime()) -
-        (currentDate.getFullYear(),
-        currentDate.getMonth(),
-        currentDate.getDate(),
-        currentDate.getTime())
+      (Date.UTC(
+        endDate.getFullYear(),
+        endDate.getMonth(),
+        endDate.getDay(),
+        endDate.getHours(),
+        endDate.getMinutes()
+      ) -
+        Date.UTC(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          currentDate.getDay(),
+          currentDate.getHours(),
+          currentDate.getMinutes()
+        )) /
+        (1000 * 60 * 60 * 24)
     );
 
-    if (differet > 0) {
+    if (differet < 0) {
       return 'Pending';
-    } else if (endDifference) {
+    } else if (endDifference > 0) {
+      return 'Expired';
+    } else {
       return 'Event On going';
     }
-
-    return 'Expired';
   }
 }
