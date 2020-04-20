@@ -55,6 +55,8 @@ export class CalendarComponent implements OnInit {
   eventStartDate = new FormControl();
   eventEndDate = new FormControl();
 
+  setInterval = setInterval;
+
   constructor(private modal: NgbModal, private formBuilder: FormBuilder) {
     this.eventForm = this.formBuilder.group({
       eventTitle: '',
@@ -65,7 +67,9 @@ export class CalendarComponent implements OnInit {
     this.eventForm.valueChanges.subscribe();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+  }
 
   addNewEvent(): void {
     const title = this.eventTitle.value;
@@ -253,12 +257,10 @@ export class CalendarComponent implements OnInit {
         (1000 * 60 * 60 * 24)
     );
 
-    if (differet < 0) {
+    if (differet < 0 && endDifference > 0) {
       return 'Pending';
-    } else if (endDifference > 0) {
-      return 'Expired';
     } else {
-      return 'Event On going';
+      return 'Expired';
     }
   }
 }
